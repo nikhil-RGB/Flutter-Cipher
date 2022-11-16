@@ -51,20 +51,27 @@ class _homeState extends State<home> {
                 ),
                 child: DropdownButton(
                     borderRadius: BorderRadius.circular(12),
-                    hint: Text(
-                      "Select Mode",
-                      style: TextStyle(
-                        color: Colors.black,
+                    hint: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 5.0,
+                        left: 5.0,
+                      ),
+                      child: Text(
+                        "Select Mode",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     dropdownColor: Colors.cyan,
-                    style: const TextStyle(
+                    style: GoogleFonts.dmSans(
                         color: Colors.black, //<-- SEE HERE
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     icon: Icon(
                       Icons.arrow_drop_down_circle,
                       color: Colors.black,
+                      size: 16,
                     ),
                     items: home.modes.map((String val) {
                       return DropdownMenuItem(
@@ -104,8 +111,8 @@ class _homeState extends State<home> {
                       backgroundColor: Colors.cyan), //<-- SEE HERE
                   onPressed: () {},
                   child: Text(
-                    "Encrypt",
-                    style: TextStyle(
+                    widget._currentMode,
+                    style: GoogleFonts.dmSans(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
