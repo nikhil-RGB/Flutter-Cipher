@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 class home extends StatefulWidget {
@@ -26,86 +26,113 @@ class _homeState extends State<home> {
           // arranges them vertically.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(bottom: 31),
-              child: Text(
-                "Shuffle Cipher",
-                style: TextStyle(
-                    fontSize: 43,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.cyan),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.cyan,
-              ),
-              child: DropdownButton(
-                  hint: Text(
-                    "Select Mode",
-                    style: TextStyle(
-                      color: Colors.black,
+            Expanded(
+              flex: 8,
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Text(
+                    "Shuffle Cipher",
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 53,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 3,
+                      color: Colors.cyan,
                     ),
                   ),
-                  dropdownColor: Colors.cyan,
-                  style: const TextStyle(
-                      color: Colors.black, //<-- SEE HERE
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                  icon: Icon(
-                    Icons.arrow_drop_down_circle,
-                    color: Colors.black,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                ),
+                child: DropdownButton(
+                    borderRadius: BorderRadius.circular(12),
+                    hint: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 5.0,
+                        left: 5.0,
+                      ),
+                      child: Text(
+                        "Select Mode",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    dropdownColor: Colors.cyan,
+                    style: GoogleFonts.dmSans(
+                        color: Colors.black, //<-- SEE HERE
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    icon: Icon(
+                      Icons.arrow_drop_down_circle,
+                      color: Colors.black,
+                      size: 16,
+                    ),
+                    items: home.modes.map((String val) {
+                      return DropdownMenuItem(
+                        value: val,
+                        child: Text(val),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget._currentMode = newValue!;
+                      });
+                    }),
+              ),
+            ),
+            Expanded(
+              flex: 12,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: TextField(
+                  controller: textarea,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 8,
+                  decoration: InputDecoration(
+                    enabledBorder: createInputBorder(),
+                    hintText: "Enter Remarks",
+                    focusedBorder: createFocusBorder(),
                   ),
-                  items: home.modes.map((String val) {
-                    return DropdownMenuItem(
-                      value: val,
-                      child: Text(val),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      widget._currentMode = newValue!;
-                    });
-                  }),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: TextField(
-                controller: textarea,
-                keyboardType: TextInputType.multiline,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  enabledBorder: createInputBorder(),
-                  hintText: "Enter Remarks",
-                  focusedBorder: createFocusBorder(),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: TextField(
-                controller: textarea,
-                keyboardType: TextInputType.multiline,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  enabledBorder: createInputBorder(),
-                  hintText: "Enter Remarks",
-                  focusedBorder: createFocusBorder(),
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.cyan), //<-- SEE HERE
+                  onPressed: () {},
+                  child: Text(
+                    widget._currentMode,
+                    style: GoogleFonts.dmSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.cyan), //<-- SEE HERE
-                onPressed: () {},
-                child: Text(
-                  "Encrypt",
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+            Expanded(
+              flex: 12,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: TextField(
+                  controller: textarea,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 8,
+                  decoration: InputDecoration(
+                    enabledBorder: createInputBorder(),
+                    hintText: "Enter Remarks",
+                    focusedBorder: createFocusBorder(),
+                  ),
                 ),
               ),
             ),
