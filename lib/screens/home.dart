@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -183,5 +184,16 @@ class _homeState extends State<home> {
           color: Colors.white,
           width: 3,
         ));
+  }
+
+  String quickCipher(String input) {
+    String output = "";
+    Random generator = Random();
+    int key = generator.nextInt(10000) + 200;
+    for(int i=0;i<input.length;i++) 
+    {
+      
+    }
+    return output;
   }
 }
