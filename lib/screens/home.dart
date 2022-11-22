@@ -93,6 +93,7 @@ class _homeState extends State<home> {
                       onChanged: (String? newValue) {
                         setState(() {
                           widget._currentMode = newValue!;
+                          _modeSwitch();
                         });
                       }),
                 ),
@@ -200,7 +201,7 @@ class _homeState extends State<home> {
   }
 
   //A basic cipher function which ciphers plain String value
-  //"input" by boosting eachn value in the String by integer value "key"
+  //"input" by boosting each value in the String by integer value "key"
   String _quickCipher(String input) {
     String output = "";
     Random generator = Random();
@@ -223,15 +224,86 @@ class _homeState extends State<home> {
     return output;
   }
 
+  //This function calls all other cipher-related functions.
   String _doCiphering(String input) {
     String output = "";
+    input = _padding(input);
+    input = _shuffle(input);
     output = _quickCipher(input);
     return output;
   }
 
+  //This function calls all other deciphering related functions.
   String _doDeciphering(String input) {
     String output = "";
     output = _quickDecipher(input);
+    output = _unshuffle(output);
+    return output.trim();
+  }
+
+  //This function helps in clearing
+  //the text-boxes on a switch between cipher and
+  //decipher modes- does not call setState() itself.
+  void _modeSwitch() {
+    textarea1.clear();
+    textarea2.clear();
+  }
+
+  //This function shuffles characters in the
+  //string.
+  String _shuffle(String input) {
+    String output = "";
+    for (int i = 0; i < input.length; i++) {
+      int ch = input.codeUnitAt(i);
+      if (i % 2 == 0) {
+        ++ch;
+      } else {
+        --ch;
+      }
+      output += String.fromCharCode(ch);
+    }
+
+    int pos = 0;
+
+    Random r = Random();
+    pos = r.nextInt(output.length - 1);
+    if (pos == 0) {
+      ++pos;
+    }
+    //pos is the index anchor around which the first part of the string is reversed.
+    String part1 = output.substring(0, pos);
+    String part2 = output.substring(pos);
+
+    part1 = String.fromCharCodes(part1.codeUnits.reversed);
+    output = part1 + part2;
+    return (output + String.fromCharCode(pos));
+  }
+
+  String _unshuffle(String input) {
+    String output = "";
+    int kindex = input.codeUnitAt(input.length - 1);
+    output = input.substring(0, input.length - 1);
+    String sp = output.substring(0, kindex);
+    String pp = output.substring(kindex);
+    sp = String.fromCharCodes(sp.codeUnits.reversed);
+    output = sp + pp;
+    String temp = "";
+    for (int i = 0; i < output.length; i++) {
+      int ch = output.codeUnitAt(i);
+      if (i % 2 == 0) {
+        --ch;
+      } else {
+        ++ch;
+      }
+      temp += String.fromCharCode(ch);
+    }
+    output = temp;
     return output;
+  }
+
+  //Concatenates 4 spaces to the beginning of the
+  //String
+  String _padding(String input) {
+    return "    $input";
   }
 }
