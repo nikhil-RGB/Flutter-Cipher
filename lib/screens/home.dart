@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,9 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+  //Controller object for input text area.
   TextEditingController textarea1 = TextEditingController();
+  //Controller object for output text area.
   TextEditingController textarea2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -121,7 +124,18 @@ class _homeState extends State<home> {
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.cyan), //<-- SEE HERE
-                    onPressed: () {},
+                    onPressed: () {
+                      String input = textarea1.text;
+                      String output = "";
+                      if (widget._currentMode == "Cipher") {
+                        output = _doCiphering(input);
+                      } else {
+                        output = _doDeciphering(input);
+                      }
+                      setState(() {
+                        textarea2.text = output;
+                      });
+                    },
                     child: Text(
                       widget._currentMode,
                       style: GoogleFonts.dmSans(
@@ -183,5 +197,41 @@ class _homeState extends State<home> {
           color: Colors.white,
           width: 3,
         ));
+  }
+
+  //A basic cipher function which ciphers plain String value
+  //"input" by boosting eachn value in the String by integer value "key"
+  String _quickCipher(String input) {
+    String output = "";
+    Random generator = Random();
+    int key = generator.nextInt(10000) + 200;
+    for (int i = 0; i < input.length; i++) {
+      output += String.fromCharCode(input.codeUnitAt(i) + key);
+    }
+    output += String.fromCharCode(key);
+    return output;
+  }
+
+  //A basic implementation of a quick decipher function, this
+  //function works by reducing the value of each character in the String by ASCII value "key"
+  String _quickDecipher(String input) {
+    String output = "";
+    int key = input.codeUnitAt(input.length - 1);
+    for (int i = 0; i < input.length - 1; i++) {
+      output += String.fromCharCode(input.codeUnitAt(i) - key);
+    }
+    return output;
+  }
+
+  String _doCiphering(String input) {
+    String output = "";
+    output = _quickCipher(input);
+    return output;
+  }
+
+  String _doDeciphering(String input) {
+    String output = "";
+    output = _quickDecipher(input);
+    return output;
   }
 }
