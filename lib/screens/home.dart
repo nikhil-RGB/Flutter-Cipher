@@ -19,6 +19,12 @@ class _homeState extends State<home> {
   //Controller object for output text area.
   TextEditingController textarea2 = TextEditingController();
   @override
+  void initState() {
+    //TODO: Initialize the state.
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //Widget  tree for home widget
     return Container(
@@ -45,7 +51,7 @@ class _homeState extends State<home> {
                     child: Text(
                       widget._sudo ? "!Sudo Mode!" : "Shuffle Cipher",
                       style: GoogleFonts.bebasNeue(
-                        fontSize: 53,
+                        fontSize: 44,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 3,
                         color: Colors.cyan,
@@ -99,9 +105,9 @@ class _homeState extends State<home> {
                 ),
               ),
               Expanded(
-                flex: 12,
+                flex: 14,
                 child: Padding(
-                  padding: const EdgeInsets.all(18.0),
+                  padding: const EdgeInsets.all(18),
                   child: TextField(
                     style: GoogleFonts.aldrich(
                       fontWeight: FontWeight.bold,
@@ -109,10 +115,10 @@ class _homeState extends State<home> {
                     ),
                     controller: textarea1,
                     keyboardType: TextInputType.multiline,
-                    maxLines: 8,
+                    maxLines: 11,
                     decoration: InputDecoration(
                       enabledBorder: createInputBorder(),
-                      hintText: "Enter Remarks",
+                      hintText: "Enter text here",
                       focusedBorder: createFocusBorder(),
                     ),
                   ),
@@ -124,7 +130,8 @@ class _homeState extends State<home> {
                   padding: const EdgeInsets.only(bottom: 20),
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.cyan), //<-- SEE HERE
+                      backgroundColor: Colors.cyan,
+                    ),
                     onPressed: () {
                       String input = textarea1.text;
                       String output = "";
@@ -148,7 +155,7 @@ class _homeState extends State<home> {
                 ),
               ),
               Expanded(
-                flex: 12,
+                flex: 14,
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: TextField(
@@ -158,10 +165,10 @@ class _homeState extends State<home> {
                     ),
                     controller: textarea2,
                     keyboardType: TextInputType.multiline,
-                    maxLines: 8,
+                    maxLines: 11,
                     decoration: InputDecoration(
                       enabledBorder: createInputBorder(),
-                      hintText: "Enter Remarks",
+                      hintText: "Output text here",
                       focusedBorder: createFocusBorder(),
                     ),
                   ),
