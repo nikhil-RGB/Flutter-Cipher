@@ -159,6 +159,8 @@ class _homeState extends State<home> {
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: TextField(
+                    enableInteractiveSelection: false,
+                    focusNode: AlwaysDisabledFocusNode(),
                     style: GoogleFonts.aldrich(
                       fontWeight: FontWeight.bold,
                       color: (widget._sudo) ? Colors.cyan : Colors.white,
@@ -313,4 +315,9 @@ class _homeState extends State<home> {
   String _padding(String input) {
     return "    $input";
   }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
