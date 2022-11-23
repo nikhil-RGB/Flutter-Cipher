@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class home extends StatefulWidget {
   static const modes = ["Cipher", "Decipher"];
@@ -44,10 +45,10 @@ class _homeState extends State<home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Expanded(
-                flex: 8,
+                flex: 9,
                 child: Container(
                   child: Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Text(
                       widget._sudo ? "!Sudo Mode!" : "Shuffle Cipher",
                       style: GoogleFonts.bebasNeue(
@@ -117,6 +118,20 @@ class _homeState extends State<home> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 11,
                     decoration: InputDecoration(
+                      prefixIcon: IconButton(
+                        color: Colors.cyan,
+                        focusColor: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            (Clipboard.getData(Clipboard.kTextPlain))
+                                .then((value) {
+                              String text = (value?.text) ?? "";
+                              textarea1.text = text;
+                            });
+                          });
+                        },
+                        icon: const Icon(Icons.paste_rounded),
+                      ),
                       enabledBorder: createInputBorder(),
                       hintText: "Enter text here",
                       focusedBorder: createFocusBorder(),
@@ -125,7 +140,7 @@ class _homeState extends State<home> {
                 ),
               ),
               Expanded(
-                flex: 3,
+                flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: OutlinedButton(
@@ -147,7 +162,7 @@ class _homeState extends State<home> {
                     child: Text(
                       widget._currentMode,
                       style: GoogleFonts.dmSans(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
@@ -169,6 +184,15 @@ class _homeState extends State<home> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 11,
                     decoration: InputDecoration(
+                      prefixIcon: IconButton(
+                        color: Colors.cyan,
+                        focusColor: Colors.white,
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: textarea2.text));
+                        },
+                        icon: const Icon(Icons.copy_all_rounded),
+                      ),
                       enabledBorder: createInputBorder(),
                       hintText: "Output text here",
                       focusedBorder: createFocusBorder(),
