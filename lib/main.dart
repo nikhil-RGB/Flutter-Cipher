@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Cipher App',
       theme: ThemeData(
         // Application theme
+        hintColor: Colors.cyan,
         primarySwatch: Colors.cyan,
       ),
       home: home(),
