@@ -64,13 +64,14 @@ class _homeState extends State<home> {
               Expanded(
                 flex: 2,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.cyan,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                   child: DropdownButton(
                       borderRadius: BorderRadius.circular(12),
-                      hint: Padding(
-                        padding: const EdgeInsets.only(
+                      hint: const Padding(
+                        padding: EdgeInsets.only(
                           right: 5.0,
                           left: 5.0,
                         ),
