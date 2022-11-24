@@ -49,13 +49,15 @@ class _homeState extends State<home> {
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      widget._sudo ? "!Sudo Mode!" : "Shuffle Cipher",
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 44,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 3,
-                        color: Colors.cyan,
+                    child: SafeArea(
+                      child: Text(
+                        widget._sudo ? "!Sudo Mode!" : "Shuffle Cipher",
+                        style: GoogleFonts.bebasNeue(
+                          fontSize: 44,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 3,
+                          color: Colors.cyan,
+                        ),
                       ),
                     ),
                   ),
