@@ -1,3 +1,4 @@
+//import 'dart:html';
 import 'dart:ui';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/services.dart';
 class home extends StatefulWidget {
   static const modes = ["Cipher", "Decipher"];
   String _currentMode = "Cipher";
+  bool _psswd_enabled = false;
   bool _sudo = false;
   home({Key? key}) : super(key: key);
 
@@ -65,47 +67,102 @@ class _homeState extends State<home> {
               ),
               Expanded(
                 flex: 2,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.cyan,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: DropdownButton(
-                      borderRadius: BorderRadius.circular(12),
-                      hint: const Padding(
-                        padding: EdgeInsets.only(
-                          right: 5.0,
-                          left: 5.0,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.cyan,
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
-                        child: Text(
-                          "Select Mode",
-                          style: TextStyle(
-                            color: Colors.black,
+                        child: DropdownButton(
+                            borderRadius: BorderRadius.circular(12),
+                            hint: const Padding(
+                              padding: EdgeInsets.only(
+                                right: 5.0,
+                                left: 20.0,
+                              ),
+                              child: Text(
+                                "Select Mode",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                            dropdownColor: Colors.cyan,
+                            style: GoogleFonts.dmSans(
+                                color: Colors.black, //<-- SEE HERE
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                            icon: Icon(
+                              Icons.arrow_drop_down_circle,
+                              color: Colors.black,
+                              size: 16,
+                            ),
+                            items: home.modes.map((String val) {
+                              return DropdownMenuItem(
+                                value: val,
+                                child: Text(val),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                widget._currentMode = newValue!;
+                                _modeSwitch();
+                                if (widget._currentMode == "Decipher") {
+                                  widget._psswd_enabled = false;
+                                }
+                              });
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10.0, left: 10.0),
+                        child: Transform.scale(
+                          scaleY: 1.25,
+                          child: Card(
+                            color: (widget._currentMode == "Decipher")
+                                ? Colors.grey
+                                : Colors.cyan,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (widget._currentMode == "Decipher") {
+                                    return;
+                                  }
+                                  widget._psswd_enabled =
+                                      !widget._psswd_enabled;
+                                });
+                              },
+                              splashColor: (widget._currentMode == "Decipher")
+                                  ? Colors.transparent
+                                  : Colors.blueAccent,
+                              child: Row(
+                                children: [
+                                  Transform.scale(
+                                    scale: 0.7,
+                                    child: Checkbox(
+                                        value: widget._psswd_enabled,
+                                        onChanged: (changed) {}),
+                                  ),
+                                  Text(
+                                    "Password Protection",
+                                    style: GoogleFonts.dmSans(
+                                        color: Colors.black, //<-- SEE HERE
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      dropdownColor: Colors.cyan,
-                      style: GoogleFonts.dmSans(
-                          color: Colors.black, //<-- SEE HERE
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold),
-                      icon: Icon(
-                        Icons.arrow_drop_down_circle,
-                        color: Colors.black,
-                        size: 16,
-                      ),
-                      items: home.modes.map((String val) {
-                        return DropdownMenuItem(
-                          value: val,
-                          child: Text(val),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          widget._currentMode = newValue!;
-                          _modeSwitch();
-                        });
-                      }),
+                    ),
+                  ],
                 ),
               ),
               Expanded(
