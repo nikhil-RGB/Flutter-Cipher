@@ -509,7 +509,7 @@ class _homeState extends State<home> {
                     cipher_psswd_inp.text == "") {
                   return;
                 }
-                print("Entered password is ${cipher_psswd_inp.text}");
+
                 Navigator.pop(context, cipher_psswd_inp.text);
                 cipher_psswd_inp.clear();
               },
@@ -580,10 +580,10 @@ class _homeState extends State<home> {
     String password_line = _quickDecipher(lines.removeAt(0));
     input = lines.join("\n");
     bool flag = password_line.split(" ")[0] == "true";
-    print(flag);
+
     if (flag) {
       String password = password_line.split(" ")[1];
-      print(password);
+
       String userp;
       do {
         userp = await openPasswordDialog();
