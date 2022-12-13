@@ -217,13 +217,20 @@ class _homeState extends State<home> {
                       String input = textarea1.text;
                       String output = "";
                       if (widget._currentMode == "Cipher") {
-                        output = _doCiphering(input);
+                        _callCipherOperation(input).then((value) {
+                          output = value;
+                          setState(() {
+                            textarea2.text = output;
+                          });
+                        });
                       } else {
-                        output = _doDeciphering(input);
+                        _callDecipherOperation(input).then((value) {
+                          output = value;
+                          setState(() {
+                            textarea2.text = output;
+                          });
+                        });
                       }
-                      setState(() {
-                        textarea2.text = output;
-                      });
                     },
                     child: Text(
                       widget._currentMode,
@@ -325,20 +332,43 @@ class _homeState extends State<home> {
   }
 
   //This function calls all other cipher-related functions.
-  String _doCiphering(String input) {
+  Future<String> _doCiphering(String input) async {
+    if (input == "") {
+      return "";
+      //empty input validation
+    }
     String output = "";
-    input = _padding(input);
-    input = _shuffle(input);
-    output = _quickCipher(input);
+    try {
+      input = _padding(input);
+      input = _shuffle(input);
+      output = _quickCipher(input);
+    } catch (exception) {
+      await openErrorDialog("Cipher Failure",
+          "An error occurred while processing the input", true);
+      return "";
+    }
     return output;
   }
 
   //This function calls all other deciphering related functions.
-  String _doDeciphering(String input) {
-    String output = "";
-    output = _quickDecipher(input);
-    output = _unshuffle(output);
-    return output.trim();
+  Future<String> _doDeciphering(String input) async {
+    if (input == "") {
+      return "";
+      //empty input validation
+    }
+    try {
+      String output = "";
+      output = _quickDecipher(input);
+      output = _unshuffle(output);
+      return output.trim();
+    } catch (exception) {
+      await openErrorDialog(
+          "Decipher failure",
+          "This message cannot be Deciphered as it's format is unrecognized.",
+          true);
+
+      return "";
+    }
   }
 
   //This function helps in clearing
@@ -479,6 +509,7 @@ class _homeState extends State<home> {
                     cipher_psswd_inp.text == "") {
                   return;
                 }
+                print("Entered password is ${cipher_psswd_inp.text}");
                 Navigator.pop(context, cipher_psswd_inp.text);
                 cipher_psswd_inp.clear();
               },
@@ -503,7 +534,9 @@ class _homeState extends State<home> {
             ),
             content: Text(
               details,
-              style: GoogleFonts.dmSans(),
+              style: GoogleFonts.dmSans(
+                color: Colors.cyan,
+              ),
             ),
             actions: [
               ElevatedButton(
@@ -520,6 +553,53 @@ class _homeState extends State<home> {
           );
         },
       );
+
+  Future<String> _callCipherOperation(String input) async {
+    String password_line = "";
+    String result = "";
+    String output = await _doCiphering(input);
+    if (widget._psswd_enabled) {
+      String password = await openPasswordDialog();
+      if (password == "") {
+        return "";
+      }
+      password_line = _providePasswordLine(true, password);
+      result = "$password_line\n$output";
+    } else {
+      password_line = _providePasswordLine(false, "");
+      result = "$password_line\n$output";
+    }
+    return result;
+  }
+
+  Future<String> _callDecipherOperation(String input) async {
+    if (input == "") {
+      return "";
+    }
+    List<String> lines = input.split("\n");
+    String password_line = _quickDecipher(lines.removeAt(0));
+    input = lines.join("\n");
+    bool flag = password_line.split(" ")[0] == "true";
+    print(flag);
+    if (flag) {
+      String password = password_line.split(" ")[1];
+      print(password);
+      String userp;
+      do {
+        userp = await openPasswordDialog();
+        if (userp == "") {
+          return "";
+        }
+        if (userp != password) {
+          await openErrorDialog(
+              "Incorrect Password",
+              "Password Entered was incorrect.\nPlease try again with a different password.",
+              true);
+        }
+      } while (userp != password);
+    }
+    return _doDeciphering(input);
+  }
 }
 
 class AlwaysDisabledFocusNode extends FocusNode {
