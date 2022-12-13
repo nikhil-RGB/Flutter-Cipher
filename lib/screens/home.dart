@@ -4,12 +4,13 @@ import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:passwordfield/passwordfield.dart';
 
 class home extends StatefulWidget {
   static const modes = ["Cipher", "Decipher"];
   String _currentMode = "Cipher";
   bool _psswd_enabled = false;
-  bool _sudo = false;
+  BuildContext? _context;
   home({Key? key}) : super(key: key);
 
   @override
@@ -21,6 +22,9 @@ class _homeState extends State<home> {
   TextEditingController textarea1 = TextEditingController();
   //Controller object for output text area.
   TextEditingController textarea2 = TextEditingController();
+  //Password field for password field.
+  TextEditingController cipher_psswd_inp = TextEditingController();
+
   @override
   void initState() {
     //TODO: Initialize the state.
@@ -29,6 +33,7 @@ class _homeState extends State<home> {
 
   @override
   Widget build(BuildContext context) {
+    widget._context = context;
     //Widget  tree for home widget
     return Container(
       constraints: const BoxConstraints.expand(),
@@ -53,7 +58,9 @@ class _homeState extends State<home> {
                     padding: const EdgeInsets.all(20.0),
                     child: SafeArea(
                       child: Text(
-                        widget._sudo ? "!Sudo Mode!" : "Shuffle Cipher",
+                        widget._psswd_enabled
+                            ? "Secure Cipher"
+                            : "Shuffle Cipher",
                         style: GoogleFonts.bebasNeue(
                           fontSize: 44,
                           fontWeight: FontWeight.bold,
@@ -399,6 +406,120 @@ class _homeState extends State<home> {
   String _padding(String input) {
     return "    $input";
   }
+
+  String _providePasswordLine(bool provide, String password) {
+    String line = "";
+    if (provide) {
+      line = _quickCipher("true $password");
+    } else {
+      line = _quickCipher("false");
+    }
+    return line;
+  }
+
+  Future openPasswordDialog() => showDialog(
+      context: widget._context!,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))),
+          title: Text(
+            "${widget._currentMode} Operation Password",
+            style: GoogleFonts.dmSans(
+              color: Colors.cyan,
+            ),
+          ),
+          backgroundColor: Color(0XFF004246),
+          content: PasswordField(
+            backgroundColor: Colors.black,
+            color: Colors.cyan,
+            controller: cipher_psswd_inp,
+            maxLength: 10,
+            passwordConstraint: r'^\w[a-zA-Z@#0-9.]*$',
+            inputDecoration: PasswordDecoration(
+              hintStyle: GoogleFonts.dmSans(
+                color: Colors.cyan,
+              ),
+              inputStyle: GoogleFonts.dmSans(
+                color: Colors.cyan,
+              ),
+            ),
+            hintText: 'Enter Password',
+            border: PasswordBorder(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.blue.shade100,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.blue.shade100,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(width: 2, color: Colors.red.shade200),
+              ),
+            ),
+            errorMessage: 'must not contain spaces',
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, "");
+                cipher_psswd_inp.clear();
+              },
+              child: Text("Cancel", style: GoogleFonts.dmSans()),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (cipher_psswd_inp.text.contains(" ") ||
+                    cipher_psswd_inp.text == "") {
+                  return;
+                }
+                Navigator.pop(context, cipher_psswd_inp.text);
+                cipher_psswd_inp.clear();
+              },
+              child: Text("Confirm", style: GoogleFonts.dmSans()),
+            ),
+          ],
+        );
+      });
+
+  Future openErrorDialog(String? error_title, String details, bool clear) =>
+      showDialog(
+        context: widget._context!,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            title: Text(
+              error_title ?? "An Error occurred",
+              style: GoogleFonts.dmSans(
+                color: Colors.cyan,
+              ),
+            ),
+            content: Text(
+              details,
+              style: GoogleFonts.dmSans(),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  if (clear) {
+                    cipher_psswd_inp.clear();
+                  }
+                },
+                child: Text("Ok", style: GoogleFonts.dmSans()),
+              ),
+            ],
+            backgroundColor: Color(0XFF004246),
+          );
+        },
+      );
 }
 
 class AlwaysDisabledFocusNode extends FocusNode {
