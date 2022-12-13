@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         hintColor: Colors.cyan,
         primarySwatch: Colors.cyan,
       ),
-      home: home(),
+      home: SafeArea(child: home()),
     );
   }
 }
