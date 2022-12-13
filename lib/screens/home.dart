@@ -56,17 +56,15 @@ class _homeState extends State<home> {
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: SafeArea(
-                      child: Text(
-                        widget._psswd_enabled
-                            ? "Secure Cipher"
-                            : "Shuffle Cipher",
-                        style: GoogleFonts.bebasNeue(
-                          fontSize: 44,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 3,
-                          color: Colors.cyan,
-                        ),
+                    child: Text(
+                      widget._psswd_enabled
+                          ? "Secure Cipher"
+                          : "Shuffle Cipher",
+                      style: GoogleFonts.bebasNeue(
+                        fontSize: 44,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 3,
+                        color: Colors.cyan,
                       ),
                     ),
                   ),
@@ -179,7 +177,8 @@ class _homeState extends State<home> {
                   child: TextField(
                     style: GoogleFonts.aldrich(
                       fontWeight: FontWeight.bold,
-                      color: (widget._sudo) ? Colors.cyan : Colors.white,
+                      color:
+                          (widget._psswd_enabled) ? Colors.cyan : Colors.white,
                     ),
                     controller: textarea1,
                     keyboardType: TextInputType.multiline,
@@ -245,7 +244,8 @@ class _homeState extends State<home> {
                     focusNode: AlwaysDisabledFocusNode(),
                     style: GoogleFonts.aldrich(
                       fontWeight: FontWeight.bold,
-                      color: (widget._sudo) ? Colors.cyan : Colors.white,
+                      color:
+                          (widget._psswd_enabled) ? Colors.cyan : Colors.white,
                     ),
                     controller: textarea2,
                     keyboardType: TextInputType.multiline,
