@@ -559,6 +559,9 @@ class _homeState extends State<home> {
       );
 
   Future<String> _callCipherOperation(String input) async {
+    if (input.trim() == "") {
+      return "";
+    }
     String password_line = "";
     String result = "";
     String output = await _doCiphering(input);
