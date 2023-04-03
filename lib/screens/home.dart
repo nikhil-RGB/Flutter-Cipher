@@ -1,5 +1,6 @@
 //import 'dart:html';
-import 'dart:ui';
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, camel_case_types
+
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,6 @@ class _homeState extends State<home> {
 
   @override
   void initState() {
-    //TODO: Initialize the state.
     super.initState();
   }
 
@@ -42,6 +42,7 @@ class _homeState extends State<home> {
               image: AssetImage("assets/images/background.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -53,19 +54,15 @@ class _homeState extends State<home> {
             children: <Widget>[
               Expanded(
                 flex: 9,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      widget._psswd_enabled
-                          ? "Secure Cipher"
-                          : "Shuffle Cipher",
-                      style: GoogleFonts.bebasNeue(
-                        fontSize: 44,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 3,
-                        color: Colors.cyan,
-                      ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    widget._psswd_enabled ? "Secure Cipher" : "Shuffle Cipher",
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 44,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 3,
+                      color: Colors.cyan,
                     ),
                   ),
                 ),
@@ -102,7 +99,7 @@ class _homeState extends State<home> {
                                   color: Colors.black, //<-- SEE HERE
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_drop_down_circle,
                                 color: Colors.black,
                                 size: 16,
@@ -292,7 +289,7 @@ class _homeState extends State<home> {
 
   OutlineInputBorder createInputBorder() {
     //return type is OutlineInputBorder
-    return OutlineInputBorder(
+    return const OutlineInputBorder(
         //Outline border type for TextFeild
         borderRadius: BorderRadius.all(Radius.circular(20)),
         borderSide: BorderSide(
@@ -302,7 +299,7 @@ class _homeState extends State<home> {
   }
 
   OutlineInputBorder createFocusBorder() {
-    return OutlineInputBorder(
+    return const OutlineInputBorder(
         //Outline border type for TextFeild
         borderRadius: BorderRadius.all(Radius.circular(20)),
         borderSide: BorderSide(
@@ -455,7 +452,7 @@ class _homeState extends State<home> {
       context: widget._context!,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           title: Text(
             "${widget._currentMode} Operation Password",
@@ -463,7 +460,7 @@ class _homeState extends State<home> {
               color: Colors.cyan,
             ),
           ),
-          backgroundColor: Color(0XFF004246),
+          backgroundColor: const Color(0XFF004246),
           content: PasswordField(
             backgroundColor: Colors.black,
             color: Colors.cyan,
@@ -528,7 +525,7 @@ class _homeState extends State<home> {
         context: widget._context!,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6.0))),
             title: Text(
               error_title ?? "An Error occurred",
@@ -553,7 +550,7 @@ class _homeState extends State<home> {
                 child: Text("Ok", style: GoogleFonts.dmSans()),
               ),
             ],
-            backgroundColor: Color(0XFF004246),
+            backgroundColor: const Color(0XFF004246),
           );
         },
       );
